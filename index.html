@@ -81,27 +81,27 @@
         return value
       }
       
-      nestedQuery = function (percentile, params) {
-        date = params.from.toLocaleString().split(',')[0]
-        result[date][params.event][percentile] = result[date][params.event][percentile] || {count: 0};
-        endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric';
+      nestedQuery = function (percentile, params, event) {
+        var date = params.from.toLocaleString().split(',')[0]
+        result[date][event][percentile] = result[date][event][percentile] || {count: 0};
+        var endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric';
         console.log(result);
         MP.api.query(endpoint, params).done(function(Data){
           date = params.from.toLocaleString().split(',')[0]
-          queryData = result[date][params.event][percentile]
+          var queryData = result[date][event][percentile]
           queryData.total = queryData.total || MP.Data.inst(Data.data.values).sum().sum().values()
-          queryTotal = queryData.total
-          tempParams = params
-          queryBuckets = MP.Data.inst(Data.data.values).sum().values();
-          queryList = obj2array(queryBuckets).sort(naturalSort);
-          queryIndex = 0;
+          var queryTotal = queryData.total
+          var tempParams = params
+          var queryBuckets = MP.Data.inst(Data.data.values).sum().values();
+          var queryList = obj2array(queryBuckets).sort(naturalSort);
+          var queryIndex = 0;
           while (queryData['count'] / queryData['total'] < percentile){
-            queryBucket = queryList[queryIndex];
+            var queryBucket = queryList[queryIndex];
             queryData['count'] += queryBuckets[queryBucket];
             queryIndex++;
           }
           try {
-            queryBounds = queryBucket.replace(/,/g,'').split(' - ');
+            var queryBounds = queryBucket.replace(/,/g,'').split(' - ');
           }
           catch(err) {
             debugger
@@ -119,11 +119,11 @@
               'Value': queryBounds[0]
             }).draw();
           } else {
-            zero = 'number(properties["Duration"]) > 0 and '
-            lowerBound = '(number(properties["Duration"]) >= ' + queryBounds[0];
-            upperBound = ' and number(properties["Duration"]) <=' + queryBounds[1]+ ')';
+            var zero = 'number(properties["Duration"]) > 0 and '
+            var lowerBound = '(number(properties["Duration"]) >= ' + queryBounds[0];
+            var upperBound = ' and number(properties["Duration"]) <=' + queryBounds[1]+ ')';
             tempParams.where = zero + lowerBound + upperBound;
-            nestedQuery(percentile, tempParams);
+            nestedQuery(percentile, tempParams, event);
           }
         });
       }
@@ -141,10 +141,10 @@
         result = {}
         
         while (new Date(dates.from) <= new Date(dates.to)) { 
-          myDate = new Date(dates.from)
+          var myDate = new Date(dates.from)
           console.log (myDate)
           myDate.setDate(myDate.getDate() + 1);
-          for (index in eventList){
+          for (var index in eventList){
             var event = eventList[index]
             params[event] = {
               where: 'number(properties["Duration"]) > 0',
@@ -158,12 +158,12 @@
             var date = dates.from.toLocaleString().split(',')[0]
             result[date] = {}
             dates.from = myDate
-            
             params[event].event = event
-            result[date][params[event].event] = {};
+            
+            result[date][event] = {};
             console.log(event);
             console.log(params[event]);
-            nestedQuery(.5, params[event]);
+            nestedQuery(.5, params[event], event);
             // nestedQuery(.95, params, total, 0);
           }
         }
