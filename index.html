@@ -144,6 +144,7 @@
           console.log (myDate)
           myDate.setDate(myDate.getDate() + 1);
           for (index in eventList){
+            var event = eventList[index]
             params[event] = {
               where: 'number(properties["Duration"]) > 0',
               from: dates.from,
@@ -156,7 +157,7 @@
             var date = dates.from.toLocaleString().split(',')[0]
             result[date] = {}
             dates.from = myDate
-            var event = eventList[index]
+            
             params[event].event = event
             result[date][event] = {}
             nestedQuery(.5, params[event]);
