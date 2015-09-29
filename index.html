@@ -85,6 +85,7 @@
         date = params.from.toLocaleString().split(',')[0]
         result[date][params.event][percentile] = result[date][params.event][percentile] || {count: 0};
         endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric';
+        console.log(result);
         MP.api.query(endpoint, params).done(function(Data){
           date = params.from.toLocaleString().split(',')[0]
           queryData = result[date][params.event][percentile]
