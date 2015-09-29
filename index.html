@@ -129,6 +129,7 @@
       
       // Query logic
       var runQuery = function(){
+        var params = {}
         var table = $('#table').DataTable();
         table
           .clear()
@@ -142,23 +143,23 @@
           myDate = new Date(dates.from)
           console.log (myDate)
           myDate.setDate(myDate.getDate() + 1);
-          params = {
-            where: 'number(properties["Duration"]) > 0',
-            from: dates.from,
-            to: dates.from,
-            on: 'number(properties["Duration"])',
-            unit: 'day',
-            buckets: 12,
-            allow_more_buckets:false,
-          };
-          date = dates.from.toLocaleString().split(',')[0]
-          result[date] = {}
-          dates.from = myDate
           for (index in eventList){
-            event = eventList[index]
-            params.event = event
+            params[event] = {
+              where: 'number(properties["Duration"]) > 0',
+              from: dates.from,
+              to: dates.from,
+              on: 'number(properties["Duration"])',
+              unit: 'day',
+              buckets: 12,
+              allow_more_buckets:false,
+            };
+            var date = dates.from.toLocaleString().split(',')[0]
+            result[date] = {}
+            dates.from = myDate
+            var event = eventList[index]
+            params[event].event = event
             result[date][event] = {}
-            nestedQuery(.5, params);
+            nestedQuery(.5, params[event]);
             // nestedQuery(.95, params, total, 0);
           }
         }
