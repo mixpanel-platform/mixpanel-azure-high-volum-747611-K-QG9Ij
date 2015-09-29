@@ -146,7 +146,7 @@
           myDate.setDate(myDate.getDate() + 1);
 
           var date = dates.from.toLocaleString().split(',')[0]
-          result[date] = {}
+          result[date] = {};
           dates.from = myDate
 
           for (var index in eventList){
@@ -164,6 +164,7 @@
             
             result[date][event] = {};
             console.log(event);
+            console.log(result);
             console.log(params[event]);
             nestedQuery(.5, params[event], event);
             // nestedQuery(.95, params, total, 0);
