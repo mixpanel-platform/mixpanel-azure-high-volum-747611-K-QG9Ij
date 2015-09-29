@@ -144,6 +144,11 @@
           var myDate = new Date(dates.from)
           console.log (myDate)
           myDate.setDate(myDate.getDate() + 1);
+
+          var date = dates.from.toLocaleString().split(',')[0]
+          result[date] = {}
+          dates.from = myDate
+
           for (var index in eventList){
             var event = eventList[index]
             params[event] = {
@@ -155,9 +160,6 @@
               buckets: 12,
               allow_more_buckets:false,
             };
-            var date = dates.from.toLocaleString().split(',')[0]
-            result[date] = {}
-            dates.from = myDate
             params[event].event = event
             
             result[date][event] = {};
