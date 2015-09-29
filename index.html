@@ -159,7 +159,7 @@
             dates.from = myDate
             
             params[event].event = event
-            result[date][params[event]] = {};
+            result[date][params[event].event] = {};
             console.log(event);
             console.log(params[event]);
             nestedQuery(.5, params[event]);
