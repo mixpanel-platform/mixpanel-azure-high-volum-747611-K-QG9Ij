@@ -81,12 +81,12 @@
         return value
       }
       
-      nestedQuery = function (percentile, params, event, date) {
+      nestedQuery = function (percentile, parameters, event, date) {
         // var date = params.from.toLocaleString().split(',')[0]
         result[date][event][percentile] = result[date][event][percentile] || {count: 0};
         var endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric';
         console.log(result);
-        MP.api.query(endpoint, params).done(function(Data){
+        MP.api.query(endpoint, params[event]).done(function(Data){
           // date = params.from.toLocaleString().split(',')[0]
           var queryData = result[date][event][percentile]
           console.log(Data.data.values);
@@ -94,7 +94,7 @@
           console.log(newTotal);
           queryData.total = queryData.total || newTotal;
           var queryTotal = queryData.total
-          var tempParams = params
+          var tempParams = params[event]
           var queryBuckets = MP.Data.inst(Data.data.values).sum().values();
           var queryList = obj2array(queryBuckets).sort(naturalSort);
           var queryIndex = 0;
@@ -155,6 +155,7 @@
           for (var index in eventList){
             var event = eventList[index]
             params[event] = {
+              event: event
               where: 'number(properties["Duration"]) > 0',
               from: dates.from,
               to: dates.from,
@@ -163,8 +164,7 @@
               buckets: 12,
               allow_more_buckets:false,
             };
-            params[event].event = event
-            
+
             result[date][event] = {};
             console.log(event);
             console.log(date);
