@@ -131,8 +131,8 @@
           .draw();
           
         endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric'
-        eventList = ['TotalTimeToPortalReady', 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
-        percentiles = [.5, .95]
+        eventList = ['TotalTimeToPortalReady']//, 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
+        percentiles = [.5]//, .95]
         result = {}
         
         while (new Date(dates.from) <= new Date(dates.to)) { 
@@ -148,7 +148,7 @@
             params[event] = {}
             result[date][event] = {};
             for (percentIndex in percentiles){
-              percent = percentile[percentIndex]
+              percent = percentiles[percentIndex]
               params[event][percent] = {
                 event: event,
                 where: 'number(properties["Duration"]) > 0',
