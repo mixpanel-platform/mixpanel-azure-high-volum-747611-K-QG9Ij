@@ -109,15 +109,13 @@
           catch(err){
             console.log(event, date)
           }
-          
-          
+         if (percentile == .5){
+            percentileStr = 'Median'
+          } else {
+            percentileStr = '95th'
+          }
           if (queryBounds.length == 1) {
             queryData.value = queryBounds[0]
-            if (percentile == .5){
-              percentileStr = 'Median'
-            } else {
-              percentileStr = '95th'
-            }
             debugger;
             tableData[date] = tableData[date] || {}
             tableData[date][String(percentileStr + ' ' + event)] = queryBounds[0]
