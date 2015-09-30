@@ -161,7 +161,7 @@
                 to: dates.from.toISOString().split('T')[0],
                 on: 'number(properties["Duration"])',
                 unit: 'day',
-                buckets: 10000,
+                buckets: 100,
                 allow_more_buckets:false,
               };
               nestedQuery(percent, params[event][percent], event, date);
