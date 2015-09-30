@@ -121,6 +121,7 @@
             tableData[date][String(percentileStr + ' ' + event)] = queryBounds[0]
             var table = $('#table').DataTable();
             table.clear()
+            debugger;
             for (rowDate in tableData) {
               table.row.add({
                 'Date': rowDate,
