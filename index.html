@@ -150,10 +150,10 @@
               to: dates.from.toISOString().split('T')[0],
               on: 'number(properties["Duration"])',
               unit: 'day',
-              buckets: 100,
+              buckets: 10000,
               allow_more_buckets:false,
             };
-
+            debugger
             result[date][event] = {};
             nestedQuery(.5, params[event], event, date);
             nestedQuery(.95, params[event], event, date);
