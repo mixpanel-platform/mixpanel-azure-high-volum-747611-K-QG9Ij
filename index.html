@@ -86,7 +86,7 @@
         result[date][event][percentile] = result[date][event][percentile] || {count: 0};
         var endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric';
         console.log(result);
-        MP.api.query(endpoint, params[event]).done(function(Data){
+        MP.api.query(endpoint, parameters).done(function(Data){
           // date = params.from.toLocaleString().split(',')[0]
           var queryData = result[date][event][percentile]
           console.log(Data.data.values);
@@ -94,7 +94,7 @@
           console.log(newTotal);
           queryData.total = queryData.total || newTotal;
           var queryTotal = queryData.total
-          var tempParams = params[event]
+          var tempParams = parameters
           var queryBuckets = MP.Data.inst(Data.data.values).sum().values();
           var queryList = obj2array(queryBuckets).sort(naturalSort);
           var queryIndex = 0;
