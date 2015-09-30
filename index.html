@@ -91,15 +91,13 @@
           var queryData = result[date][event][percentile]
           console.log(Data.data.values);
           var newTotal = MP.Data.inst(Data.data.values).sum().sum().values();
-          newTotal = isNaN(newTotal) ? 0 : newTotal;
-          console.log(newTotal);
           queryData.total = queryData.total || newTotal;
           var queryTotal = queryData.total
           var tempParams = parameters
           var queryBuckets = MP.Data.inst(Data.data.values).sum().values();
           var queryList = obj2array(queryBuckets).sort(naturalSort);
           var queryIndex = 0;
-          while (queryData['count'] / queryData['total'] < percentile){
+          while (queryData['count'] / queryData['total'] < percentile && queryIndex < queryList.length){
             var queryBucket = queryList[queryIndex];
             queryData['count'] += queryBuckets[queryBucket];
             queryIndex++;
