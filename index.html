@@ -102,12 +102,9 @@
           }
           try {
             var queryBounds = queryBucket.replace(/,/g,'').split(' - ');
-            if (suffix(queryBounds[0]) == suffix(queryBounds[1])) {
-              debugger
-            }
           }
           catch(err){
-            debugger
+            console.log(event, date)
           }
           
           queryBounds = queryBounds.map(suffix)
