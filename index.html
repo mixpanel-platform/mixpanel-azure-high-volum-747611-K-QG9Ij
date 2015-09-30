@@ -97,7 +97,7 @@
           var queryList = obj2array(queryBuckets).sort(naturalSort);
           var queryIndex = 0;
           
-          for (index in queryList){
+          for (index in queryList) {
             var queryBucket = queryList[index];
             var counts = queryBuckets[queryBucket]
             if ((queryData['count'] + counts) / queryData['total'] >= percentile) {
@@ -149,7 +149,7 @@
           .draw();
           
         endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric'
-        eventList = ['TotalTimeToPortalReady', 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
+        eventList = ['TotalTimeToPortalReady']//, 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
         result = {}
         
         while (new Date(dates.from) <= new Date(dates.to)) { 
@@ -175,7 +175,7 @@
 
             result[date][event] = {};
             nestedQuery(.5, params[event], event, date);
-            nestedQuery(.95, params[event], event, date);
+            //nestedQuery(.95, params[event], event, date);
           }
           myDate.setDate(myDate.getDate() + 1);
         }
