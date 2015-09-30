@@ -41,8 +41,8 @@
       
       $('#table').DataTable({
         columns: [
-          { title: "Event", data: "Event" },
           { title: "Date", data: "Date" },
+          { title: "Event", data: "Event" },
           { title: "Percentile", data: "Percentile" },
           { title: "Value", data: "Value" }  
         ]
@@ -90,35 +90,41 @@
         MP.api.query(endpoint, parameters).done(function(Data){
           // date = params.from.toLocaleString().split(',')[0]
           var queryData = result[date][event][percentile]
-          var newTotal = MP.Data.inst(Data.data.values).sum().sum().values();
-          queryData.total = queryData.total || newTotal;
-          var queryTotal = queryData.total
+          queryData.total = queryData.total || MP.Data.inst(Data.data.values).sum().sum().values();
           var tempParams = parameters
           var queryBuckets = MP.Data.inst(Data.data.values).sum().values();
           var queryList = obj2array(queryBuckets).sort(naturalSort);
           var queryIndex = 0;
-          while (queryData['count'] / queryData['total'] < percentile && queryIndex < queryList.length){
-            var queryBucket = queryList[queryIndex];
+          
+          for (index in queryList){
+            var queryBucket = queryList[Index];
+            var counts = queryBuckets[queryBucket]
+            if ((queryData['count'] + counts) / queryData['total'] >= percentile) {
+              break;
+            }
             queryData['count'] += queryBuckets[queryBucket];
-            queryIndex++;
           }
+          
+          // while (queryData['count'] / queryData['total'] < percentile && queryIndex < queryList.length){
+            
+          //   queryData['count'] += queryBuckets[queryBucket];
+          //   queryIndex++;
+          // }
+          
           try {
             var queryBounds = queryBucket.replace(/,/g,'').split(' - ');
           }
           catch(err) {
+            console.log(err)
             debugger
           }
-          queryData['count'] -= queryBuckets[queryBucket];
-          for (bound in queryBounds) { 
-            queryBounds[bound] = suffix(queryBounds[bound])
-          }
+          queryBounds = queryBounds.map(suffix)
           
           if (queryBounds.length == 1) {
-            //need to use result object instead
             var table = $('#table').DataTable();
             table.row.add({
-              'Event': event,
               'Date': date,
+              'Event': event,
               'Percentile': percentile, 
               'Value': queryBounds[0]
             }).draw();
