@@ -85,6 +85,7 @@
         result[date][event][percentile] = result[date][event][percentile] || {count: 0};
         var endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric';
         MP.api.query(endpoint, parameters).done(function(Data){
+          debugger
           var queryData = result[date][event][percentile]
           queryData.total = queryData.total || MP.Data.inst(Data.data.values).sum().sum().values();
           var tempParams = parameters
@@ -136,7 +137,7 @@
           .draw();
           
         endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric'
-        eventList = ['TotalTimeToPortalReady', 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
+        eventList = ['TotalTimeToPortalReady']//, 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
         percentiles = [.5, .95]
         result = {}
         
