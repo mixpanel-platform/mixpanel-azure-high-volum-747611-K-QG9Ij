@@ -100,7 +100,12 @@
             }
             queryData['count'] += queryBuckets[queryBucket];
           }
-          var queryBounds = queryBucket.replace(/,/g,'').split(' - ');
+          try {
+            var queryBounds = queryBucket.replace(/,/g,'').split(' - ');
+          }
+          catch(err){
+            debugger
+          }
           queryBounds = queryBounds.map(suffix)
           
           if (queryBounds.length == 1) {
