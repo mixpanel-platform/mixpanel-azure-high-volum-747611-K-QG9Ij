@@ -115,8 +115,9 @@
             } else {
               percentileStr = '95th Percentile for'
             }
-            
-            tableData[date][String(percentileStr + event)] = queryBounds[0]
+            debugger;
+            var tmpDateparameters.from.toLocaleString().split(',')[0]
+            tableData[tmpDate][String(percentileStr + ' ' + event)] = queryBounds[0]
             debugger;
             var table = $('#table').DataTable();
             table.row.add({
