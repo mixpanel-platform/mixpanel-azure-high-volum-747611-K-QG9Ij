@@ -166,8 +166,8 @@
             params[event] = {
               event: event,
               where: 'number(properties["Duration"]) > 0',
-              from: dates.from.toLocaleString().split(',')[0],
-              to: dates.from.toLocaleString().split(',')[0],
+              from: dates.from.toLocaleString(),
+              to: dates.from.toLocaleString(),
               on: 'number(properties["Duration"])',
               unit: 'day',
               buckets: 12,
