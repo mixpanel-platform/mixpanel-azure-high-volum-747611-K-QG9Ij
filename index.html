@@ -142,9 +142,8 @@
         result = {}
         
         while (new Date(dates.from) <= new Date(dates.to)) { 
-          var myDate = new Date(dates.from)
+          myDate = new Date(dates.from)
           console.log (myDate)
-          myDate.setDate(myDate.getDate() + 1);
 
           var date = dates.from.toLocaleString().split(',')[0]
           result[date] = {};
@@ -169,6 +168,7 @@
             nestedQuery(.5, params[event], event, date);
             // nestedQuery(.95, params, total, 0);
           }
+          myDate.setDate(myDate.getDate() + 1);
         }
       };
       
