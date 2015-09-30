@@ -76,9 +76,12 @@
       $('#table').DataTable({
         columns: [
           { title: "Date", data: "Date" },
-          { title: "Event", data: "Event" },
-          { title: "Percentile", data: "Percentile" },
-          { title: "Value", data: "Value" }  
+          { title: "Median Percentile Portal Ready", data: "Median Percentile for TotalTimeToPortalReady Ready" },
+          { title: "95th Percentile Portal Ready", data: "95th Percentile for TotalTimeToPortalReady Ready" },
+          { title: "Median Percentile StartBoard Ready", data: "Median Percentile for TotalTimeToStartBoardReady Ready" },
+          { title: "95th Percentile StartBoard Ready", data: "95th Percentile for TotalTimeToStartBoardReady Ready" },
+          { title: "Median Percentile DeepLink Ready", data: "Median Percentile for TotalTimeToDeepLinkReady Ready" },
+          { title: "95th Percentile Deeplink Ready", data: "95th Percentile for TotalTimeToDeepLinkReady Ready" },
         ]
       })
       nestedQuery = function (percentile, parameters, event, date) {
@@ -111,21 +114,28 @@
           if (queryBounds.length == 1) {
             queryData.value = queryBounds[0]
             if (percentile == .5){
-              percentileStr = 'Median Percentile for'
+              percentileStr = 'Median'
             } else {
-              percentileStr = '95th Percentile for'
+              percentileStr = '95th'
             }
             debugger;
             tableData[date] = tableData[date] || {}
             tableData[date][String(percentileStr + ' ' + event)] = queryBounds[0]
             debugger;
             var table = $('#table').DataTable();
-            table.row.add({
-              'Date': date,
-              'MedianPercentileEvent': "result[date][event][.5][value",
-              'Percentile': percentile, 
-              'Value': queryBounds[0]
-            }).draw();
+            table.clear()
+            for (rowDate in tableData) {
+              table.row.add({
+                'Date': rowDate,
+                'Median Percentile for TotalTimeToPortalReady': rowDate['Median TotalTimeToPortalReady'] ,
+                '95th Percentile for TotalTimeToPortalReady': rowDate['95th TotalTimeToPortalReady'],
+                'Median Percentile for TotalTimeToStartBoardReady': rowDate['Median TotalTimeToStartBoardReady'],
+                '95th Percentile for TotalTimeToStartBoardReady': rowDate['95th TotalTimeToStartBoardReady'],
+                'Median Percentile for TotalTimeToDeepLinkReady': rowDate['Median TotalTimeToDeepLinkReady'],
+                '95th Percentile for TotalTimeToDeepLinkReady': rowDate['95th TotalTimeToDeepLinkReady'],
+              })
+            }
+            table.draw();
           } else {
             var zero = 'number(properties["Duration"]) > 0 and '
             var lowerBound = '(number(properties["Duration"]) >= ' + queryBounds[0];
