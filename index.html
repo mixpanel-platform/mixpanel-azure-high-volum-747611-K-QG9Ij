@@ -76,12 +76,12 @@
       $('#table').DataTable({
         columns: [
           { title: "Date", data: "Date" },
-          { title: "Median Percentile Portal Ready", data: "Median Percentile for TotalTimeToPortalReady Ready" },
-          { title: "95th Percentile Portal Ready", data: "95th Percentile for TotalTimeToPortalReady Ready" },
-          { title: "Median Percentile StartBoard Ready", data: "Median Percentile for TotalTimeToStartBoardReady Ready" },
-          { title: "95th Percentile StartBoard Ready", data: "95th Percentile for TotalTimeToStartBoardReady Ready" },
-          { title: "Median Percentile DeepLink Ready", data: "Median Percentile for TotalTimeToDeepLinkReady Ready" },
-          { title: "95th Percentile Deeplink Ready", data: "95th Percentile for TotalTimeToDeepLinkReady Ready" },
+          { title: "Median Percentile Portal Ready", data: "Median Percentile TotalTimeToPortalReady" },
+          { title: "95th Percentile Portal Ready", data: "95th Percentile TotalTimeToPortalReady" },
+          { title: "Median Percentile StartBoard Ready", data: "Median Percentile TotalTimeToStartBoardReady" },
+          { title: "95th Percentile StartBoard Ready", data: "95th Percentile TotalTimeToStartBoardReady" },
+          { title: "Median Percentile DeepLink Ready", data: "Median Percentile TotalTimeToDeepLinkReady" },
+          { title: "95th Percentile Deeplink Ready", data: "95th Percentile TotalTimeToDeepLinkReady" },
         ]
       })
       nestedQuery = function (percentile, parameters, event, date) {
@@ -125,12 +125,12 @@
             for (rowDate in tableData) {
               table.row.add({
                 'Date': rowDate,
-                'Median Percentile for TotalTimeToPortalReady': tableData[rowDate]['Median TotalTimeToPortalReady'] ,
-                '95th Percentile for TotalTimeToPortalReady': tableData[rowDate]['95th TotalTimeToPortalReady'],
-                'Median Percentile for TotalTimeToStartBoardReady': tableData[rowDate]['Median TotalTimeToStartBoardReady'],
-                '95th Percentile for TotalTimeToStartBoardReady': tableData[rowDate]['95th TotalTimeToStartBoardReady'],
-                'Median Percentile for TotalTimeToDeepLinkReady': tableData[rowDate]['Median TotalTimeToDeepLinkReady'],
-                '95th Percentile for TotalTimeToDeepLinkReady': tableData[rowDate]['95th TotalTimeToDeepLinkReady'],
+                'Median Percentile TotalTimeToPortalReady': tableData[rowDate]['Median TotalTimeToPortalReady'] ,
+                '95th Percentile TotalTimeToPortalReady': tableData[rowDate]['95th TotalTimeToPortalReady'],
+                'Median Percentile TotalTimeToStartBoardReady': tableData[rowDate]['Median TotalTimeToStartBoardReady'],
+                '95th Percentile TotalTimeToStartBoardReady': tableData[rowDate]['95th TotalTimeToStartBoardReady'],
+                'Median Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['Median TotalTimeToDeepLinkReady'],
+                '95th Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['95th TotalTimeToDeepLinkReady'],
               })
             }
             table.draw();
