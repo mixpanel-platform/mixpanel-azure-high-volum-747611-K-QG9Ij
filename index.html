@@ -91,6 +91,7 @@
           var queryData = result[date][event][percentile]
           console.log(Data.data.values);
           var newTotal = MP.Data.inst(Data.data.values).sum().sum().values();
+          console.log(newTotal);
           queryData.total = queryData.total || newTotal;
           var queryTotal = queryData.total
           var tempParams = params
