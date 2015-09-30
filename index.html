@@ -110,10 +110,18 @@
           
           if (queryBounds.length == 1) {
             queryData.value = queryBounds[0]
+            if (percentile == .5){
+              percentileStr = 'Median Percentile for'
+            } else {
+              percentileStr = '95th Percentile for'
+            }
+            
+            tableData[date][String(percentileStr + event)] = queryBounds[0]
+            debugger;
             var table = $('#table').DataTable();
             table.row.add({
               'Date': date,
-              'Event': event,
+              'MedianPercentileEvent': "result[date][event][.5][value",
               'Percentile': percentile, 
               'Value': queryBounds[0]
             }).draw();
@@ -130,6 +138,7 @@
       // Query logic
       var runQuery = function(){
         var params = {}
+        tableData = {}
         var table = $('#table').DataTable();
         table
           .clear()
@@ -137,7 +146,7 @@
           
         endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric'
         eventList = ['TotalTimeToPortalReady', 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
-        percentiles = [.5,.95]
+        percentiles = [.5, .95]
         result = {}
         
         while (new Date(dates.from) <= new Date(dates.to)) { 
