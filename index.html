@@ -90,7 +90,6 @@
           var tempParams = parameters
           var queryBuckets = MP.Data.inst(Data.data.values).sum().values();
           var queryList = obj2array(queryBuckets).sort(naturalSort);
-          var queryIndex = 0;
           
           for (index in queryList) {
             var queryBucket = queryList[index];
@@ -102,14 +101,15 @@
           }
           try {
             var queryBounds = queryBucket.replace(/,/g,'').split(' - ');
+            queryBounds = queryBounds.map(suffix)
           }
           catch(err){
             console.log(event, date)
           }
           
-          queryBounds = queryBounds.map(suffix)
           
           if (queryBounds.length == 1) {
+            queryData.value = queryBounds[0]
             var table = $('#table').DataTable();
             table.row.add({
               'Date': date,
@@ -161,7 +161,7 @@
                 to: dates.from.toISOString().split('T')[0],
                 on: 'number(properties["Duration"])',
                 unit: 'day',
-                buckets: 12,
+                buckets: 2,
                 allow_more_buckets:true,
               };
               nestedQuery(percent, params[event][percent], event, date);
