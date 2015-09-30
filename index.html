@@ -89,6 +89,7 @@
         result[date][event][percentile] = result[date][event][percentile] || {count: 0};
         var endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric';
         MP.api.query(endpoint, parameters).done(function(Data){
+          debugger;
           // date = params.from.toLocaleString().split(',')[0]
           var queryData = result[date][event][percentile]
           queryData.total = queryData.total || MP.Data.inst(Data.data.values).sum().sum().values();
