@@ -41,6 +41,8 @@
       
       $('#table').DataTable({
         columns: [
+          { title: "Event", data: "Event" },
+          { title: "Date", data: "Date" },
           { title: "Percentile", data: "Percentile" },
           { title: "Value", data: "Value" }  
         ]
@@ -88,7 +90,6 @@
         MP.api.query(endpoint, parameters).done(function(Data){
           // date = params.from.toLocaleString().split(',')[0]
           var queryData = result[date][event][percentile]
-          console.log(Data.data.values);
           var newTotal = MP.Data.inst(Data.data.values).sum().sum().values();
           queryData.total = queryData.total || newTotal;
           var queryTotal = queryData.total
