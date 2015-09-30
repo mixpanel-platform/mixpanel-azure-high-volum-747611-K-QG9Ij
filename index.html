@@ -97,7 +97,7 @@
           var queryIndex = 0;
           
           for (index in queryList){
-            var queryBucket = queryList[Index];
+            var queryBucket = queryList[index];
             var counts = queryBuckets[queryBucket]
             if ((queryData['count'] + counts) / queryData['total'] >= percentile) {
               break;
