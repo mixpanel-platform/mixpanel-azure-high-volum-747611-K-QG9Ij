@@ -106,6 +106,7 @@
           catch(err){
             debugger
           }
+          
           queryBounds = queryBounds.map(suffix)
           
           if (queryBounds.length == 1) {
@@ -136,7 +137,7 @@
           
         endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric'
         eventList = ['TotalTimeToPortalReady']//, 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
-        percentiles = [.5, .95]
+        percentiles = [.95]
         result = {}
         
         while (new Date(dates.from) <= new Date(dates.to)) { 
