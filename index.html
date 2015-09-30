@@ -114,12 +114,11 @@
           } else {
             percentileStr = '95th'
           }
+          tableData[date] = tableData[date] || {}
+          
           if (queryBounds.length == 1) {
             queryData.value = queryBounds[0]
-            debugger;
-            tableData[date] = tableData[date] || {}
             tableData[date][String(percentileStr + ' ' + event)] = queryBounds[0]
-            debugger;
             var table = $('#table').DataTable();
             table.clear()
             for (rowDate in tableData) {
