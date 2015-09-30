@@ -152,7 +152,7 @@
           result[date] = {};
           dates.from = myDate
 
-          for (var index in eventList){
+          for (var index in eventList) {
             var event = eventList[index]
             params[event] = {
               event: event,
@@ -167,7 +167,7 @@
 
             result[date][event] = {};
             nestedQuery(.5, params[event], event, date);
-            // nestedQuery(.95, params, total, 0);
+            nestedQuery(.95, params[event], event, date);
           }
           myDate.setDate(myDate.getDate() + 1);
         }
