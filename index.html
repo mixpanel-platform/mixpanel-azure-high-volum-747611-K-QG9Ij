@@ -132,6 +132,7 @@
           
         endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric'
         eventList = ['TotalTimeToPortalReady', 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
+        percentiles = [.5, .95]
         result = {}
         
         while (new Date(dates.from) <= new Date(dates.to)) { 
@@ -144,20 +145,22 @@
 
           for (var index in eventList) {
             var event = eventList[index]
-            params[event] = {
-              event: event,
-              where: 'number(properties["Duration"]) > 0',
-              from: dates.from.toISOString().split('T')[0],
-              to: dates.from.toISOString().split('T')[0],
-              on: 'number(properties["Duration"])',
-              unit: 'day',
-              buckets: 10000,
-              allow_more_buckets:false,
-            };
-            debugger
+            params[event] = {}
             result[date][event] = {};
-            nestedQuery(.5, params[event], event, date);
-            nestedQuery(.95, params[event], event, date);
+            for (percentIndex in percentiles){
+              percent = percentile[percentIndex]
+              params[event][percent] = {
+                event: event,
+                where: 'number(properties["Duration"]) > 0',
+                from: dates.from.toISOString().split('T')[0],
+                to: dates.from.toISOString().split('T')[0],
+                on: 'number(properties["Duration"])',
+                unit: 'day',
+                buckets: 10000,
+                allow_more_buckets:false,
+              };
+              nestedQuery(percent, params[event][percent], event, date);
+            }
           }
           myDate.setDate(myDate.getDate() + 1);
         }
