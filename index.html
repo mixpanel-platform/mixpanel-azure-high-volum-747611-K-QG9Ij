@@ -69,6 +69,43 @@
         } 
         return value
       }
+      proto = document.location.protocol;
+      setUrl = proto + "//api.mixpanel.com/engage";
+      getUrl = proto + "//mixpanel.com/api/2.0/engage";
+      token = $('#sm_content_box > div.sm_content.management > div:nth-child(6) > div.value > div.label').html()
+      set = function(data) {
+        update = {
+          "$set": data,
+        }
+        send(update, token);
+      }
+      
+      append = function(data) {
+        console.log('appending data', data);
+        update = {
+          "$append": data,
+        } 
+        send(update, token);
+      }
+
+      send = function(update, distinct) {
+        $.extend(update, {
+          "$token": token,
+          "$distinct_id": distinct
+        })
+        
+        payload = { 'data': btoa(JSON.stringify(update)), "ip": 0 };
+        console.log('set', payload)
+        setXHR = new XMLHttpRequest();
+        setXHR.open("POST", setUrl, true);
+        setXHR.send($.param(payload))
+      };
+
+      //retrieve the user/database
+      get = function() {
+        return MP.api.query('/api/2.0/engage', {'distinct_id': distinct})
+      }
+      
       var eventSelector = $('#eventSelect').MPEventSelect({limit: 500});
       var dateSelector = $('#dateRange').MPDatepicker();
       var eventName, dates;
