@@ -89,7 +89,6 @@
       }
 
       send = function(update, distinct) {
-        debugger
         token = "5e1e1a9c5b3420a5700f9daa06c94c16"
         console.log(token)
         $.extend(update, {
@@ -230,7 +229,6 @@
             var date = dateArray[index]
             var data = promiseArray[index]
             results = data.results[0]
-            debugger
             if (!$.isEmptyObject(results)) {
               tableData[date] = results.$properties
             }
@@ -251,6 +249,7 @@
                   allow_more_buckets:true,
                 };
                 var eventKey = String(percent + ' ' + event)
+                debugger
                 if (!$.isEmptyObject(tableData[date])) {
                   try {
                     tableData[date][eventKey] = tableData[date][eventKey]
