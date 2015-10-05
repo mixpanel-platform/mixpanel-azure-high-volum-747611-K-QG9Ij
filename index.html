@@ -236,12 +236,12 @@
               var eventKey = String(percent + ' ' + event)
               get(date.replace(/\//g,''))[eventKey]).done(function(cache) {
                 debugger
-                if (value = get(date.replace(/\//g,''))[eventKey]) {
-                  console.log(value)
-                } else {
-                  pending += 1;
-                  nestedQuery(percent, params[event][percent], event, date);
-                }
+                // if (value = get(date.replace(/\//g,''))[eventKey]) {
+                //   console.log(value)
+                // } else {
+                //   pending += 1;
+                //   nestedQuery(percent, params[event][percent], event, date);
+                // }
               })
        
             }
