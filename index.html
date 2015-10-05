@@ -72,10 +72,8 @@
       proto = document.location.protocol;
       setUrl = proto + "//api.mixpanel.com/engage";
       getUrl = proto + "//mixpanel.com/api/2.0/engage";
-      token = $('#sm_content_box > div.sm_content.management > div:nth-child(6) > div.value > div.label').html()
-      
+
       set = function(data, distinct) {
-        debugger
         update = {
           "$set": data,
         }
@@ -91,7 +89,8 @@
       }
 
       send = function(update, distinct) {
-        token = $('#sm_content_box > div.sm_content.management > div:nth-child(6) > div.value > div.label').html()
+        token = $.trim($('#sm_content_box > div.sm_content.management > div:nth-child(6) > div.value > div').html())
+        console.log(token)
         $.extend(update, {
           "$token": token,
           "$distinct_id": distinct
@@ -106,7 +105,6 @@
 
       //retrieve the user/database
       get = function(distinct) {
-        debugger;
         return MP.api.query('/api/2.0/engage', {'distinct_id': distinct})
       }
       
