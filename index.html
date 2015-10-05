@@ -179,7 +179,6 @@
       function drawTable(data){
         debugger
         var rows = []
-        var table = $('#table').DataTable();
         for (rowDate in data) {
           var value = tableData[rowDate]
           rows.push({
@@ -193,7 +192,7 @@
           })
         }
         
-        table.DataTable( {
+        $('#table').DataTable( {
           data: rows,
         }).draw();
       }
