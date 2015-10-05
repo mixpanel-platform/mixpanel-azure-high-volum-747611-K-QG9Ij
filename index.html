@@ -164,19 +164,7 @@
             sendData[eventKey] = queryBounds[0]
             set(sendData, date)
             if (pending == 0) {
-              var table = $('#table').DataTable();
-              for (rowDate in tableData) {
-                table.row.add({
-                  'Date': rowDate,
-                  'Median Percentile TotalTimeToPortalReady': tableData[rowDate]['.5 TotalTimeToPortalReady'] ,
-                  '95th Percentile TotalTimeToPortalReady': tableData[rowDate]['.95 TotalTimeToPortalReady'],
-                  'Median Percentile TotalTimeToStartBoardReady': tableData[rowDate]['.5 TotalTimeToStartBoardReady'],
-                  '95th Percentile TotalTimeToStartBoardReady': tableData[rowDate]['.95 TotalTimeToStartBoardReady'],
-                  'Median Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['.5 TotalTimeToDeepLinkReady'],
-                  '95th Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['.95 TotalTimeToDeepLinkReady'],
-                })
-              }
-              table.draw();
+              drawTable
             }
           } else {
             tableData[date][String(percentileStr + ' ' + event)] = 'Pending'
@@ -187,6 +175,22 @@
             nestedQuery(percentile, tempParams, event, date);
           }
         });
+      }
+      
+      function drawTable(data){
+        var table = $('#table').DataTable();
+        for (rowDate in data) {
+          table.row.add({
+            'Date': rowDate,
+            'Median Percentile TotalTimeToPortalReady': tableData[rowDate]['.5 TotalTimeToPortalReady'] ,
+            '95th Percentile TotalTimeToPortalReady': tableData[rowDate]['.95 TotalTimeToPortalReady'],
+            'Median Percentile TotalTimeToStartBoardReady': tableData[rowDate]['.5 TotalTimeToStartBoardReady'],
+            '95th Percentile TotalTimeToStartBoardReady': tableData[rowDate]['.95 TotalTimeToStartBoardReady'],
+            'Median Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['.5 TotalTimeToDeepLinkReady'],
+            '95th Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['.95 TotalTimeToDeepLinkReady'],
+          })
+        }
+        table.draw();
       }
       
       // Query logic
@@ -240,24 +244,21 @@
                   event: event,
                   where: 'number(properties["Duration"]) > 0',
                   from: dates.from.toISOString().split('T')[0],
-                  to: dates.from.toISOString().split('T')[0],
+                  to: dates.from.toISOString().split('T')[0],a
                   on: 'number(properties["Duration"])',
                   unit: 'day',
                   buckets: 2,
                   allow_more_buckets:true,
                 };
                 var eventKey = String(percent + ' ' + event)
-                if (tableData[eventKey]) {
-                  console.log(value)
-                } else {
+                if (!$.isEmpty(tableData[date])) {
                   pending += 1;
                   nestedQuery(percent, params[event][percent], event, date);
                 }
               }
             }
-          };
+          }
         });
-
       }
       
       $('#run').on('click', function(e){
