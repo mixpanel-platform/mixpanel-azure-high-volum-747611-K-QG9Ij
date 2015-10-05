@@ -115,9 +115,9 @@
       $('#table').DataTable({
         columns: [
           { title: "Date", data: "Date" },
-          { title: "Median Percentile Portal Ready", data: "Median TotalTimeToPortalReady" },
+          { title: "Median Percentile Portal Ready", data: "0.5 TotalTimeToPortalReady" },
           { title: "95th Percentile Portal Ready", data: "0.95 TotalTimeToPortalReady" },
-          { title: "Median Percentile StartBoard Ready", data: ".05 TotalTimeToStartBoardReady" },
+          { title: "Median Percentile StartBoard Ready", data: "0.5 TotalTimeToStartBoardReady" },
           { title: "95th Percentile StartBoard Ready", data: "0.95 TotalTimeToStartBoardReady" },
           { title: "Median Percentile DeepLink Ready", data: "0.5 TotalTimeToDeepLinkReady" },
           { title: "95th Percentile Deeplink Ready", data: "0.95 TotalTimeToDeepLinkReady" },
@@ -182,12 +182,12 @@
         for (rowDate in data) {
           table.row.add({
             'Date': rowDate,
-            'Median Percentile TotalTimeToPortalReady': tableData[rowDate]['0.5 TotalTimeToPortalReady'] ,
-            '95th Percentile TotalTimeToPortalReady': tableData[rowDate]['0.95 TotalTimeToPortalReady'],
-            'Median Percentile TotalTimeToStartBoardReady': tableData[rowDate]['0.5 TotalTimeToStartBoardReady'],
-            '95th Percentile TotalTimeToStartBoardReady': tableData[rowDate]['0.95 TotalTimeToStartBoardReady'],
-            'Median Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['0.5 TotalTimeToDeepLinkReady'],
-            '95th Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['0.95 TotalTimeToDeepLinkReady'],
+            '0.5 TotalTimeToPortalReady': tableData[rowDate]['0.5 TotalTimeToPortalReady'] ,
+            '0.95 TotalTimeToPortalReady': tableData[rowDate]['0.95 TotalTimeToPortalReady'],
+            '0.5 Percentile TotalTimeToStartBoardReady': tableData[rowDate]['0.5 TotalTimeToStartBoardReady'],
+            '0.95 Percentile TotalTimeToStartBoardReady': tableData[rowDate]['0.95 TotalTimeToStartBoardReady'],
+            '0.5 Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['0.5 TotalTimeToDeepLinkReady'],
+            '0.95 Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['0.95 TotalTimeToDeepLinkReady'],
           })
         }
         table.draw();
