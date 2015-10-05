@@ -218,46 +218,46 @@
           debugger
           datePromises.push(get(date));
           dateArray.push(date)
-        }
-          
-          Promise.all(datePromises).then(function(promiseArray){
-            for (index in promiseArray) {
-              var date = dateArray[index]
-              var data = promiseArray[index]
-              results = data.results[0]
-              if(results.$properties){
-                tableData[date] = results.$properties
-              }
-              for (var index in eventList) {
-                var event = eventList[index]
-                params[event] = {}
-                result[date][event] = {};
-                for (percentIndex in percentiles){
-                  percent = percentiles[percentIndex]
-                  params[event][percent] = {
-                    event: event,
-                    where: 'number(properties["Duration"]) > 0',
-                    from: dates.from.toISOString().split('T')[0],
-                    to: dates.from.toISOString().split('T')[0],
-                    on: 'number(properties["Duration"])',
-                    unit: 'day',
-                    buckets: 2,
-                    allow_more_buckets:true,
-                  };
-                  var eventKey = String(percent + ' ' + event)
-                  if (tableData[eventKey]) {
-                    console.log(value)
-                  } else {
-                    pending += 1;
-                    nestedQuery(percent, params[event][percent], event, date);
-                  }
-                }
-              }
-            };
-          })
           myDate.setDate(myDate.getDate() + 1);
         }
-      };
+          
+        Promise.all(datePromises).then(function(promiseArray){
+          for (index in promiseArray) {
+            var date = dateArray[index]
+            var data = promiseArray[index]
+            results = data.results[0]
+            if(results.$properties){
+              tableData[date] = results.$properties
+            }
+            for (var index in eventList) {
+              var event = eventList[index]
+              params[event] = {}
+              result[date][event] = {};
+              for (percentIndex in percentiles){
+                percent = percentiles[percentIndex]
+                params[event][percent] = {
+                  event: event,
+                  where: 'number(properties["Duration"]) > 0',
+                  from: dates.from.toISOString().split('T')[0],
+                  to: dates.from.toISOString().split('T')[0],
+                  on: 'number(properties["Duration"])',
+                  unit: 'day',
+                  buckets: 2,
+                  allow_more_buckets:true,
+                };
+                var eventKey = String(percent + ' ' + event)
+                if (tableData[eventKey]) {
+                  console.log(value)
+                } else {
+                  pending += 1;
+                  nestedQuery(percent, params[event][percent], event, date);
+                }
+              }
+            }
+          };
+        });
+
+      }
       
       $('#run').on('click', function(e){
         dates = $('#dateRange').val();
