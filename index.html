@@ -36,8 +36,8 @@
     <table id="table" class="display" width="100%"></table>
     <script>
      function naturalSort (a, b) {
-        aLower = suffix(a.split(' - ')[0].replace(',',''));
-        bLower = suffix(b.split(' - ')[0].replace(',',''));
+        aLower = suffix(a.split(' - ')[0].replace(/,/g,''));
+        bLower = suffix(b.split(' - ')[0].replace(/,/g,''));
         return aLower - bLower;
       }
       
@@ -166,7 +166,7 @@
             console.log(pending);
             var sendData = {}
             sendData[eventKey] = queryBounds[0]
-            set(sendData, date.replace('/',''))
+            set(sendData, date.replace(///g,''))
             if (pending == 0) {
               var table = $('#table').DataTable();
               for (rowDate in tableData) {
@@ -234,7 +234,7 @@
               };
               var eventKey = String(percent + ' ' + event)
               
-              if (value = get(date.replace('/',''))[eventKey]) {
+              if (value = get(date.replace(///g,''))[eventKey]) {
                 console.log(value)
               } else {
                 pending += 1;
