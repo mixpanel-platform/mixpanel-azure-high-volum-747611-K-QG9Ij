@@ -234,7 +234,7 @@
               };
               var eventKey = String(percent + ' ' + event)
               
-              if (value = get(date.replace(///g,''))[eventKey]) {
+              if (value = get(date.replace(/\//g,''))[eventKey]) {
                 console.log(value)
               } else {
                 pending += 1;
