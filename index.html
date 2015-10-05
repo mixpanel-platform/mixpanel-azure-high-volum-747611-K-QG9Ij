@@ -248,15 +248,13 @@
                 };
                 var eventKey = String(percent + ' ' + event)
                 debugger
-                if (!$.isEmptyObject(tableData[date])) {
-                  try {
-                    tableData[date][eventKey] = tableData[date][eventKey]
-                  } 
-                  catch(err){
-                    console.log("Cache non existant: " + date)
-                    pending += 1;
-                    nestedQuery(percent, params[event][percent], event, date);
-                  }
+                try {
+                  tableData[date][eventKey] = tableData[date][eventKey]
+                } 
+                catch(err){
+                  console.log("Cache non existant: " + date)
+                  pending += 1;
+                  nestedQuery(percent, params[event][percent], event, date);
                 }
               }
             }
