@@ -108,7 +108,7 @@
       get = function(distinct) {
         date = distinct
         MP.api.query('/api/2.0/engage', {'distinct_id': distinct}).done(function(cache){
-          return cache.results[0]
+          return cache.results[0].$properties
         })
       }
       
@@ -221,7 +221,7 @@
           dates.from = myDate
         
           debugger
-          tableData[date] = get(date).$properties || {}
+          tableData[date] = get(date) || {}
           for (var index in eventList) {
             var event = eventList[index]
             params[event] = {}
