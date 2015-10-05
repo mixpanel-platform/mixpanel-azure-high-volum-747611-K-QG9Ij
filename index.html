@@ -194,6 +194,7 @@
         var params = {}
         tableData = {}
         datePromises = []
+        dateArray = []
         pending = 0;
         var table = $('#table').DataTable();
         table
@@ -216,9 +217,13 @@
         
           debugger
           datePromises.push(get(date));
+          dateArray.push(date)
+        }
           
           Promise.all(datePromises).then(function(promiseArray){
-            _.each(promiseArray, function(data){
+            for (index in promiseArray) {
+              var date = dateArray[index]
+              var data = promiseArray[index]
               results = data.results[0]
               if(results.$properties){
                 tableData[date] = results.$properties
