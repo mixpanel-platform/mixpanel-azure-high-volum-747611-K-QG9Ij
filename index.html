@@ -115,12 +115,12 @@
       $('#table').DataTable({
         columns: [
           { title: "Date", data: "Date" },
-          { title: "Median Percentile Portal Ready", data: "Median Percentile TotalTimeToPortalReady" },
-          { title: "95th Percentile Portal Ready", data: "0.95 TotalTimeToPortalReady" },
-          { title: "Median Percentile StartBoard Ready", data: "0.5 TotalTimeToStartBoardReady" },
-          { title: "95th Percentile StartBoard Ready", data: "0.95 TotalTimeToStartBoardReady" },
-          { title: "Median Percentile DeepLink Ready", data: "0.5 TotalTimeToDeepLinkReady" },
-          { title: "95th Percentile Deeplink Ready", data: "0.95 TotalTimeToDeepLinkReady" },
+          { title: "Median Percentile Portal Ready", },
+          { title: "95th Percentile Portal Ready", },
+          { title: "Median Percentile StartBoard Ready",},
+          { title: "95th Percentile StartBoard Ready", },
+          { title: "Median Percentile DeepLink Ready", },
+          { title: "95th Percentile Deeplink Ready", },
         ]
       })
       
@@ -184,11 +184,11 @@
           rows.push({
             'Date': rowDate,
             'Median Percentile TotalTimeToPortalReady': value['0.5 TotalTimeToPortalReady'],
-            '0.95 TotalTimeToPortalReady': value['0.95 TotalTimeToPortalReady'],
-            '0.5 Percentile TotalTimeToStartBoardReady': value['0.5 TotalTimeToStartBoardReady'],
-            '0.95 Percentile TotalTimeToStartBoardReady': value['0.95 TotalTimeToStartBoardReady'],
-            '0.5 Percentile TotalTimeToDeepLinkReady': value['0.5 TotalTimeToDeepLinkReady'],
-            '0.95 Percentile TotalTimeToDeepLinkReady': value['0.95 TotalTimeToDeepLinkReady'],
+            '95th Percentile TotalTimeToPortalReady': value['0.95 TotalTimeToPortalReady'],
+            'Median Percentile TotalTimeToStartBoardReady': value['0.5 TotalTimeToStartBoardReady'],
+            '95th Percentile TotalTimeToStartBoardReady': value['0.95 TotalTimeToStartBoardReady'],
+            'Median Percentile TotalTimeToDeepLinkReady': value['0.5 TotalTimeToDeepLinkReady'],
+            '95th Percentile TotalTimeToDeepLinkReady': value['0.95 TotalTimeToDeepLinkReady'],
           })
         }
         
