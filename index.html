@@ -244,12 +244,7 @@
                     buckets: 2,
                     allow_more_buckets:true,
                   };
-                  if (percent == .5){
-                    percentileStr = 'Median'
-                  } else {
-                    percentileStr = '95th'
-                  }
-                  var eventKey = String(percentileStr + ' ' + event)
+                  var eventKey = String(percent + ' ' + event)
                   if (tableData[eventKey]) {
                     console.log(value)
                   } else {
@@ -258,15 +253,8 @@
                   }
                 }
               }
-                
-                
-                
-            });
-          }).
-          tableData[date] = get(date).done(function(cache){
-            
+            };
           })
-       
           myDate.setDate(myDate.getDate() + 1);
         }
       };
