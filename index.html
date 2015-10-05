@@ -106,6 +106,7 @@
 
       //retrieve the user/database
       get = function(distinct) {
+        debugger
         return MP.api.query('/api/2.0/engage', {'distinct_id': distinct})
       }
       
