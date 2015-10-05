@@ -248,7 +248,6 @@
                 allow_more_buckets:true,
               };
               var eventKey = String(percent + ' ' + event)
-              debugger
               if (isNan(tableData[date][eventKey])) {
                 console.log("Cache non existant: " + date)
                 pending += 1;
