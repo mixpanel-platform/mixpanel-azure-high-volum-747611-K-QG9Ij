@@ -89,6 +89,7 @@
       }
 
       send = function(update, distinct) {
+        debugger
         token = $.trim($('#sm_content_box > div.sm_content.management > div:nth-child(6) > div.value > div').html())
         console.log(token)
         $.extend(update, {
