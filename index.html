@@ -115,7 +115,7 @@
       $('#table').DataTable({
         columns: [
           { title: "Date", data: "Date" },
-          { title: "Median Percentile Portal Ready", data: "0.5 TotalTimeToPortalReady" },
+          { title: "Median Percentile Portal Ready", data: "Median Percentile TotalTimeToPortalReady" },
           { title: "95th Percentile Portal Ready", data: "0.95 TotalTimeToPortalReady" },
           { title: "Median Percentile StartBoard Ready", data: "0.5 TotalTimeToStartBoardReady" },
           { title: "95th Percentile StartBoard Ready", data: "0.95 TotalTimeToStartBoardReady" },
@@ -178,19 +178,24 @@
       
       function drawTable(data){
         debugger
+        var rows = []
         var table = $('#table').DataTable();
         for (rowDate in data) {
-          table.row.add({
+          var value = tableData[rowDate]
+          rows.push({
             'Date': rowDate,
-            '0.5 TotalTimeToPortalReady': tableData[rowDate]['0.5 TotalTimeToPortalReady'] ,
-            '0.95 TotalTimeToPortalReady': tableData[rowDate]['0.95 TotalTimeToPortalReady'],
-            '0.5 Percentile TotalTimeToStartBoardReady': tableData[rowDate]['0.5 TotalTimeToStartBoardReady'],
-            '0.95 Percentile TotalTimeToStartBoardReady': tableData[rowDate]['0.95 TotalTimeToStartBoardReady'],
-            '0.5 Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['0.5 TotalTimeToDeepLinkReady'],
-            '0.95 Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['0.95 TotalTimeToDeepLinkReady'],
+            'Median Percentile TotalTimeToPortalReady': value['0.5 TotalTimeToPortalReady'],
+            '0.95 TotalTimeToPortalReady': value['0.95 TotalTimeToPortalReady'],
+            '0.5 Percentile TotalTimeToStartBoardReady': value['0.5 TotalTimeToStartBoardReady'],
+            '0.95 Percentile TotalTimeToStartBoardReady': value['0.95 TotalTimeToStartBoardReady'],
+            '0.5 Percentile TotalTimeToDeepLinkReady': value['0.5 TotalTimeToDeepLinkReady'],
+            '0.95 Percentile TotalTimeToDeepLinkReady': value['0.95 TotalTimeToDeepLinkReady'],
           })
         }
-        table.draw();
+        
+        table.DataTable( {
+          data: data,
+        ).draw();
       }
       
       // Query logic
