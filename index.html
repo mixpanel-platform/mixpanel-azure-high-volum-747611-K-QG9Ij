@@ -106,10 +106,7 @@
 
       //retrieve the user/database
       get = function(distinct) {
-        date = distinct
-        MP.api.query('/api/2.0/engage', {'distinct_id': distinct}).done(function(cache){
-          return cache.results[0].$properties
-        })
+        return MP.api.query('/api/2.0/engage', {'distinct_id': distinct})
       }
       
       var eventSelector = $('#eventSelect').MPEventSelect({limit: 500});
@@ -154,16 +151,12 @@
             console.log(event, date)
             pending -= 1;
           }
-         if (percentile == .5){
-            percentileStr = 'Median'
-          } else {
-            percentileStr = '95th'
-          }
+
           tableData[date] = tableData[date] || {}
           
           if (queryBounds.length == 1) {
             queryData.value = queryBounds[0]
-            var eventKey = String(percentileStr + ' ' + event)
+            var eventKey = String(percentile + ' ' + event)
             tableData[date][eventKey] = queryBounds[0]
             pending -= 1;
             console.log(pending);
@@ -175,12 +168,12 @@
               for (rowDate in tableData) {
                 table.row.add({
                   'Date': rowDate,
-                  'Median Percentile TotalTimeToPortalReady': tableData[rowDate]['Median TotalTimeToPortalReady'] ,
-                  '95th Percentile TotalTimeToPortalReady': tableData[rowDate]['95th TotalTimeToPortalReady'],
-                  'Median Percentile TotalTimeToStartBoardReady': tableData[rowDate]['Median TotalTimeToStartBoardReady'],
-                  '95th Percentile TotalTimeToStartBoardReady': tableData[rowDate]['95th TotalTimeToStartBoardReady'],
-                  'Median Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['Median TotalTimeToDeepLinkReady'],
-                  '95th Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['95th TotalTimeToDeepLinkReady'],
+                  'Median Percentile TotalTimeToPortalReady': tableData[rowDate]['.5 TotalTimeToPortalReady'] ,
+                  '95th Percentile TotalTimeToPortalReady': tableData[rowDate]['.95 TotalTimeToPortalReady'],
+                  'Median Percentile TotalTimeToStartBoardReady': tableData[rowDate]['.5 TotalTimeToStartBoardReady'],
+                  '95th Percentile TotalTimeToStartBoardReady': tableData[rowDate]['.95 TotalTimeToStartBoardReady'],
+                  'Median Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['.5 TotalTimeToDeepLinkReady'],
+                  '95th Percentile TotalTimeToDeepLinkReady': tableData[rowDate]['.95 TotalTimeToDeepLinkReady'],
                 })
               }
               table.draw();
@@ -200,6 +193,7 @@
       var runQuery = function(){
         var params = {}
         tableData = {}
+        datePromises = []
         pending = 0;
         var table = $('#table').DataTable();
         table
@@ -221,32 +215,53 @@
           dates.from = myDate
         
           debugger
-          tableData[date] = get(date) || {}
-          for (var index in eventList) {
-            var event = eventList[index]
-            params[event] = {}
-            result[date][event] = {};
-            for (percentIndex in percentiles){
-              percent = percentiles[percentIndex]
-              params[event][percent] = {
-                event: event,
-                where: 'number(properties["Duration"]) > 0',
-                from: dates.from.toISOString().split('T')[0],
-                to: dates.from.toISOString().split('T')[0],
-                on: 'number(properties["Duration"])',
-                unit: 'day',
-                buckets: 2,
-                allow_more_buckets:true,
-              };
-              var eventKey = String(percent + ' ' + event)
-              if (tableData[eventKey]) {
-                console.log(value)
-              } else {
-                pending += 1;
-                nestedQuery(percent, params[event][percent], event, date);
+          datePromises.push(get(date));
+          
+          Promise.all(datePromises).then(function(promiseArray){
+            _.each(promiseArray, function(data){
+              results = data.results[0]
+              if(results.$properties){
+                tableData[date] = results.$properties
               }
-            }
-          }
+              for (var index in eventList) {
+                var event = eventList[index]
+                params[event] = {}
+                result[date][event] = {};
+                for (percentIndex in percentiles){
+                  percent = percentiles[percentIndex]
+                  params[event][percent] = {
+                    event: event,
+                    where: 'number(properties["Duration"]) > 0',
+                    from: dates.from.toISOString().split('T')[0],
+                    to: dates.from.toISOString().split('T')[0],
+                    on: 'number(properties["Duration"])',
+                    unit: 'day',
+                    buckets: 2,
+                    allow_more_buckets:true,
+                  };
+                  if (percent == .5){
+                    percentileStr = 'Median'
+                  } else {
+                    percentileStr = '95th'
+                  }
+                  var eventKey = String(percentileStr + ' ' + event)
+                  if (tableData[eventKey]) {
+                    console.log(value)
+                  } else {
+                    pending += 1;
+                    nestedQuery(percent, params[event][percent], event, date);
+                  }
+                }
+              }
+                
+                
+                
+            });
+          }).
+          tableData[date] = get(date).done(function(cache){
+            
+          })
+       
           myDate.setDate(myDate.getDate() + 1);
         }
       };
