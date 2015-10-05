@@ -231,7 +231,7 @@
             var data = promiseArray[index]
             results = data.results[0]
             debugger
-            if(results){
+            if($.isEmptyObject(results)) {
               tableData[date] = results.$properties
             }
             for (var index in eventList) {
@@ -251,7 +251,7 @@
                   allow_more_buckets:true,
                 };
                 var eventKey = String(percent + ' ' + event)
-                if (!$.isEmpty(tableData[date])) {
+                if (!$.isEmptyObject(tableData[date])) {
                   pending += 1;
                   nestedQuery(percent, params[event][percent], event, date);
                 }
