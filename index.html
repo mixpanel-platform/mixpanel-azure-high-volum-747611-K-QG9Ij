@@ -231,7 +231,7 @@
             var data = promiseArray[index]
             results = data.results[0]
             debugger
-            if($.isEmptyObject(results)) {
+            if (!$.isEmptyObject(results)) {
               tableData[date] = results.$properties
             }
             for (var index in eventList) {
@@ -252,8 +252,14 @@
                 };
                 var eventKey = String(percent + ' ' + event)
                 if (!$.isEmptyObject(tableData[date])) {
-                  pending += 1;
-                  nestedQuery(percent, params[event][percent], event, date);
+                  try {
+                    tableData[date][eventKey] = tableData[date][eventKey]
+                  } 
+                  catch(err){
+                    console.log("Cache non existant: " + date)
+                    pending += 1;
+                    nestedQuery(percent, params[event][percent], event, date);
+                  }
                 }
               }
             }
