@@ -206,8 +206,8 @@
           .draw();
           
         endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric'
-        eventList = ['TotalTimeToPortalReady']//, 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
-        percentiles = [.5]//, .95]
+        eventList = ['TotalTimeToPortalReady', 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
+        percentiles = [.5, .95]
         result = {}
         
         while (new Date(dates.from) <= new Date(dates.to)) { 
