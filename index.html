@@ -96,7 +96,7 @@
           "$distinct_id": distinct
         })
         
-        payload = { 'data': btoa(JSON.stringify(update)), "ip": 0 };
+        payload = { 'data': btoa(JSON.stringify(update)), "ip": 0, "verbose": 1 };
         console.log('set', payload)
         setXHR = new XMLHttpRequest();
         setXHR.open("POST", setUrl, true);
