@@ -205,8 +205,8 @@
           .draw();
           
         endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric'
-        eventList = ['TotalTimeToPortalReady', 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
-        percentiles = [.5, .95]
+        eventList = ['TotalTimeToPortalReady']//, 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
+        percentiles = [.5]//, .95]
         result = {}
         
         while (new Date(dates.from) <= new Date(dates.to)) { 
@@ -248,6 +248,7 @@
                 allow_more_buckets:true,
               };
               var eventKey = String(percent + ' ' + event)
+              debugger
               if ($.isEmptyObject(tableData[date][eventKey])) {
                 console.log("Cache non existant: " + date)
                 pending += 1;
