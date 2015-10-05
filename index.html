@@ -215,39 +215,42 @@
 
           var date = dates.from.toLocaleString().split(',')[0]
           result[date] = {};
+          tmpResults = {};
           dates.from = myDate
           
           get(date.replace(/\//g,'')).done(function(cache) {
             debugger
-            // if (value = get(date.replace(/\//g,''))[eventKey]) {
-            //   console.log(value)
-            // } else {
-            //   pending += 1;
-            //   nestedQuery(percent, params[event][percent], event, date);
-            // }
+            tableData[date] = cache.results[0].$properties
+            for (var index in eventList) {
+              var event = eventList[index]
+              params[event] = {}
+              result[date][event] = {};
+              for (percentIndex in percentiles){
+                percent = percentiles[percentIndex]
+                params[event][percent] = {
+                  event: event,
+                  where: 'number(properties["Duration"]) > 0',
+                  from: dates.from.toISOString().split('T')[0],
+                  to: dates.from.toISOString().split('T')[0],
+                  on: 'number(properties["Duration"])',
+                  unit: 'day',
+                  buckets: 2,
+                  allow_more_buckets:true,
+                };
+                var eventKey = String(percent + ' ' + event)
+                if (tableData[eventKey]) {
+                  console.log(value)
+                } else {
+                  pending += 1;
+                  nestedQuery(percent, params[event][percent], event, date);
+                }
+         
+              }
+            }
+            
           })
 
-          for (var index in eventList) {
-            var event = eventList[index]
-            params[event] = {}
-            result[date][event] = {};
-            for (percentIndex in percentiles){
-              percent = percentiles[percentIndex]
-              params[event][percent] = {
-                event: event,
-                where: 'number(properties["Duration"]) > 0',
-                from: dates.from.toISOString().split('T')[0],
-                to: dates.from.toISOString().split('T')[0],
-                on: 'number(properties["Duration"])',
-                unit: 'day',
-                buckets: 2,
-                allow_more_buckets:true,
-              };
-              var eventKey = String(percent + ' ' + event)
-
-       
-            }
-          }
+         
           myDate.setDate(myDate.getDate() + 1);
         }
       };
