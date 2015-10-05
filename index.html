@@ -106,7 +106,10 @@
 
       //retrieve the user/database
       get = function(distinct) {
-        return MP.api.query('/api/2.0/engage', {'distinct_id': distinct})
+        date = distinct
+        MP.api.query('/api/2.0/engage', {'distinct_id': distinct}).done(function(cache){
+          return cache.results[0]
+        })
       }
       
       var eventSelector = $('#eventSelect').MPEventSelect({limit: 500});
@@ -216,37 +219,35 @@
           result[date] = {};
           tmpResults = {};
           dates.from = myDate
-          
-          get(date).done(function(cache) {
-            debugger
-            tableData[date] = cache.results[0].$properties
-            for (var index in eventList) {
-              var event = eventList[index]
-              params[event] = {}
-              result[date][event] = {};
-              for (percentIndex in percentiles){
-                percent = percentiles[percentIndex]
-                params[event][percent] = {
-                  event: event,
-                  where: 'number(properties["Duration"]) > 0',
-                  from: dates.from.toISOString().split('T')[0],
-                  to: dates.from.toISOString().split('T')[0],
-                  on: 'number(properties["Duration"])',
-                  unit: 'day',
-                  buckets: 2,
-                  allow_more_buckets:true,
-                };
-                var eventKey = String(percent + ' ' + event)
-                if (tableData[eventKey]) {
-                  console.log(value)
-                } else {
-                  pending += 1;
-                  nestedQuery(percent, params[event][percent], event, date);
-                }
-         
+        
+          debugger
+          tableData[date] = get(date).$properties || {}
+          for (var index in eventList) {
+            var event = eventList[index]
+            params[event] = {}
+            result[date][event] = {};
+            for (percentIndex in percentiles){
+              percent = percentiles[percentIndex]
+              params[event][percent] = {
+                event: event,
+                where: 'number(properties["Duration"]) > 0',
+                from: dates.from.toISOString().split('T')[0],
+                to: dates.from.toISOString().split('T')[0],
+                on: 'number(properties["Duration"])',
+                unit: 'day',
+                buckets: 2,
+                allow_more_buckets:true,
+              };
+              var eventKey = String(percent + ' ' + event)
+              if (tableData[eventKey]) {
+                console.log(value)
+              } else {
+                pending += 1;
+                nestedQuery(percent, params[event][percent], event, date);
               }
+       
             }
-            
+          
           })
 
          
