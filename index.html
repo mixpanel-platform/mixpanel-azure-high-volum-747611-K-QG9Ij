@@ -216,6 +216,16 @@
           var date = dates.from.toLocaleString().split(',')[0]
           result[date] = {};
           dates.from = myDate
+          
+          get(date.replace(/\//g,'')).done(function(cache) {
+            debugger
+            // if (value = get(date.replace(/\//g,''))[eventKey]) {
+            //   console.log(value)
+            // } else {
+            //   pending += 1;
+            //   nestedQuery(percent, params[event][percent], event, date);
+            // }
+          })
 
           for (var index in eventList) {
             var event = eventList[index]
@@ -234,15 +244,7 @@
                 allow_more_buckets:true,
               };
               var eventKey = String(percent + ' ' + event)
-              get(date.replace(/\//g,''))[eventKey]).done(function(cache) {
-                debugger
-                // if (value = get(date.replace(/\//g,''))[eventKey]) {
-                //   console.log(value)
-                // } else {
-                //   pending += 1;
-                //   nestedQuery(percent, params[event][percent], event, date);
-                // }
-              })
+
        
             }
           }
