@@ -73,19 +73,21 @@
       setUrl = proto + "//api.mixpanel.com/engage";
       getUrl = proto + "//mixpanel.com/api/2.0/engage";
       token = $('#sm_content_box > div.sm_content.management > div:nth-child(6) > div.value > div.label').html()
-      set = function(data) {
+      
+      set = function(data, distinct) {
+        debugger
         update = {
           "$set": data,
         }
-        send(update, token);
+        send(update, distinct);
       }
       
-      append = function(data) {
+      append = function(data, distinct) {
         console.log('appending data', data);
         update = {
           "$append": data,
         } 
-        send(update, token);
+        send(update, distinct);
       }
 
       send = function(update, distinct) {
@@ -102,7 +104,8 @@
       };
 
       //retrieve the user/database
-      get = function() {
+      get = function(distinct) {
+        debugger;
         return MP.api.query('/api/2.0/engage', {'distinct_id': distinct})
       }
       
@@ -157,9 +160,13 @@
           
           if (queryBounds.length == 1) {
             queryData.value = queryBounds[0]
-            tableData[date][String(percentileStr + ' ' + event)] = queryBounds[0]
+            var eventKey = String(percentileStr + ' ' + event)
+            tableData[date][eventKey] = queryBounds[0]
             pending -= 1;
             console.log(pending);
+            var sendData = {}
+            sendData[eventKey] = queryBounds[0]
+            set(sendData, date)
             if (pending == 0) {
               var table = $('#table').DataTable();
               for (rowDate in tableData) {
@@ -225,8 +232,14 @@
                 buckets: 2,
                 allow_more_buckets:true,
               };
-              pending += 1;
-              nestedQuery(percent, params[event][percent], event, date);
+              var eventKey = String(percent + ' ' + event)
+              
+              if (value = get(date)[eventKey]) {
+                console.log(value)
+              } else {
+                pending += 1;
+                nestedQuery(percent, params[event][percent], event, date);
+              }
             }
           }
           myDate.setDate(myDate.getDate() + 1);
