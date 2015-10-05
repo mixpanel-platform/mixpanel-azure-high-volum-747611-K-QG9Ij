@@ -216,12 +216,10 @@
           var date = dates.from.toLocaleString().split(',')[0]
           result[date] = {};
           tmpResults = {};
+          myDate.setDate(myDate.getDate() + 1);
           dates.from = myDate
-        
-          debugger
           datePromises.push(get(date));
           dateArray.push(date)
-          myDate.setDate(myDate.getDate() + 1);
         }
           
         Promise.all(datePromises).then(function(promiseArray){
