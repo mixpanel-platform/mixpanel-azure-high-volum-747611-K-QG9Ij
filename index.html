@@ -192,9 +192,8 @@
           })
         }
         
-        $('#table').DataTable( {
-          data: rows,
-        }).draw();
+        var table = $('#table').DataTable();
+        table.rows.add(rows).draw();
       }
       
       // Query logic
