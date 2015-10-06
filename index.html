@@ -164,6 +164,9 @@
             tempParams.where = zero + lowerBound + upperBound;
             nestedQuery(percentile, tempParams, event, date);
           }
+        }).fail(function($xhr) {
+          console.log('error with request', $xhr);
+          pending -= 1;
         });
       }
       
