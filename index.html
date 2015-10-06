@@ -233,30 +233,30 @@
             if (!$.isEmptyObject(results)) {
               tableData[date] = results.$properties
             }
-          }
           
-          for (var index in eventList) {
-            var event = eventList[index]
-            params[event] = {}
-            result[date][event] = {};
-            for (percentIndex in percentiles){
-              percent = percentiles[percentIndex]
-              params[event][percent] = {
-                event: event,
-                where: 'number(properties["Duration"]) > 0',
-                from: dates.from.toISOString().split('T')[0],
-                to: dates.from.toISOString().split('T')[0],
-                on: 'number(properties["Duration"])',
-                unit: 'day',
-                buckets: 2,
-                allow_more_buckets:true,
-              };
-              var eventKey = String(percent + ' ' + event)
-              debugger
-              if (typeof tableData[date] == 'undefined' || isNaN(tableData[date][eventKey])) {
-                console.log("Cache non existant: " + date)
-                pending += 1;
-                nestedQuery(percent, params[event][percent], event, date);
+            for (var index in eventList) {
+              var event = eventList[index]
+              params[event] = {}
+              result[date][event] = {};
+              for (percentIndex in percentiles){
+                percent = percentiles[percentIndex]
+                params[event][percent] = {
+                  event: event,
+                  where: 'number(properties["Duration"]) > 0',
+                  from: dates.from.toISOString().split('T')[0],
+                  to: dates.from.toISOString().split('T')[0],
+                  on: 'number(properties["Duration"])',
+                  unit: 'day',
+                  buckets: 2,
+                  allow_more_buckets:true,
+                };
+                var eventKey = String(percent + ' ' + event)
+                debugger
+                if (typeof tableData[date] == 'undefined' || isNaN(tableData[date][eventKey])) {
+                  console.log("Cache non existant: " + date)
+                  pending += 1;
+                  nestedQuery(percent, params[event][percent], event, date);
+                }
               }
             }
           }
