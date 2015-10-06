@@ -212,16 +212,15 @@
         eventList = ['TotalTimeToPortalReady', 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
         percentiles = [.5, .95]
         result = {}
+        var myDate = new Date(dates.from)
         
-        while (new Date(dates.from) <= new Date(dates.to)) { 
-          myDate = new Date(dates.from)
+        while (myDate <= new Date(dates.to)) { 
           console.log (myDate)
 
-          var date = dates.from.toLocaleString().split(',')[0]
+          var date = myDate.toLocaleString().split(',')[0]
           result[date] = {};
           tmpResults = {};
           myDate.setDate(myDate.getDate() + 1);
-          dates.from = myDate
           datePromises.push(get(date));
           dateArray.push(date)
         }
