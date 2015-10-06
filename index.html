@@ -238,7 +238,6 @@
         }
           
         Promise.all(datePromises).then(function(promiseArray){
-          debugger
           for (index in promiseArray) {
             var date = dateArray[index]
             var dateObj = promiseArray[index]
