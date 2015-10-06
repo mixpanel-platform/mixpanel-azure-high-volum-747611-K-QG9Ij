@@ -35,12 +35,16 @@
     </div>
     <table id="table" class="display" width="100%"></table>
     <script>
+    
+      /* Sort including , */
      function naturalSort (a, b) {
         aLower = suffix(a.split(' - ')[0].replace(/,/g,''));
         bLower = suffix(b.split(' - ')[0].replace(/,/g,''));
         return aLower - bLower;
       }
       
+      
+      /* Flat Keys for obj to Sort */
       function obj2array(json_data){
         var result = [];
         _.each(_.keys(json_data), function(key) {
@@ -49,6 +53,7 @@
         return result;
       }
       
+      /* Reverse our Suffix */
       function suffix(numberString){
         length = numberString.length;
         lastChar = numberString[length - 1]
@@ -69,32 +74,33 @@
         } 
         return value
       }
-      proto = document.location.protocol;
-      setUrl = proto + "//api.mixpanel.com/engage";
-      getUrl = proto + "//mixpanel.com/api/2.0/engage";
-
+      
+      
+      /* Structure Data for Post */
       set = function(data, distinct) {
         update = {
           "$set": data,
         }
         send(update, distinct);
       }
-    
+      
+      /* Post Cache */
       send = function(update, distinct) {
         token = "5e1e1a9c5b3420a5700f9daa06c94c16"
         $.extend(update, {
           "$token": token,
           "$distinct_id": distinct
         })
-        
-        payload = { 'data': btoa(JSON.stringify(update)), "ip": 0, "verbose": 1 };
+        var proto = document.location.protocol;
+        var setUrl = proto + "//api.mixpanel.com/engage";
+        var payload = { 'data': btoa(JSON.stringify(update)), "ip": 0, "verbose": 1 };
         console.log('set', payload)
         setXHR = new XMLHttpRequest();
         setXHR.open("POST", setUrl, true);
         setXHR.send($.param(payload))
-      };
-
-      //retrieve the user/database
+      }
+      
+      /* Get Cache */
       get = function(distinct) {
         return MP.api.query('/api/2.0/engage', {'distinct_id': distinct})
       }
@@ -115,6 +121,9 @@
         ]
       })
       
+      /* Nested queries
+          Will request until buckets are 1 unit wide
+      */
       nestedQuery = function (percentile, parameters, event, date) {
         result[date][event][percentile] = result[date][event][percentile] || {count: 0};
         var endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric';
@@ -133,12 +142,14 @@
             }
             queryData['count'] += queryBuckets[queryBucket];
           }
+          /* Edge Case where buckets fail because of silly rounding */
           try {
             var queryBounds = queryBucket.replace(/,/g,'').split(' - ');
             queryBounds = queryBounds.map(suffix)
           }
           catch(err){
             console.log(event, date)
+            queryBounds = ['Error']
             pending -= 1;
           }
 
@@ -172,7 +183,11 @@
         });
       }
       
-      function drawTable(data){
+      /* Draw Table Function 
+          Expects to be keys of the current values
+      */
+      
+      drawTable= function(data){
         var rows = []
         for (rowDate in data) {
           var value = tableData[rowDate]
@@ -196,26 +211,23 @@
         var forceCache = false
         var params = {}
         tableData = {}
-        datePromises = []
-        dateArray = []
+        var datePromises = []
+        var dateArray = []
         pending = 0;
         var table = $('#table').DataTable();
         table
           .clear()
           .draw();
           
-        endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric'
-        eventList = ['TotalTimeToPortalReady', 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
-        percentiles = [.5, .95]
+        var endpoint = 'https://mixpanel.com/api/2.0/segmentation/numeric'
+        var eventList = ['TotalTimeToPortalReady', 'TotalTimeToStartBoardReady', 'TotalTimeToDeepLinkReady']
+        var percentiles = [.5, .95]
         result = {}
         var myDate = new Date(dates.from)
         
         while (myDate <= new Date(dates.to)) { 
-          console.log (myDate)
-
           var date = myDate.toLocaleString().split(',')[0]
           result[date] = {};
-          tmpResults = {};
           myDate.setDate(myDate.getDate() + 1);
           datePromises.push(get(date));
           dateArray.push(date)
