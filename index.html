@@ -36,7 +36,7 @@
     <table id="table" class="display" width="100%"></table>
     <script>
     
-      /* Sort including , */
+      /*  Sort including ',' */
      function naturalSort (a, b) {
         aLower = suffix(a.split(' - ')[0].replace(/,/g,''));
         bLower = suffix(b.split(' - ')[0].replace(/,/g,''));
@@ -44,7 +44,7 @@
       }
       
       
-      /* Flat Keys for obj to Sort */
+      /*  Flat Keys for obj to Sort */
       function obj2array(json_data){
         var result = [];
         _.each(_.keys(json_data), function(key) {
@@ -53,7 +53,7 @@
         return result;
       }
       
-      /* Reverse our Suffix */
+      /*  Reverse our Suffix */
       function suffix(numberString){
         length = numberString.length;
         lastChar = numberString[length - 1]
@@ -76,7 +76,7 @@
       }
       
       
-      /* Structure Data for Post */
+      /*  Structure Data for Post */
       set = function(data, distinct) {
         update = {
           "$set": data,
@@ -84,7 +84,7 @@
         send(update, distinct);
       }
       
-      /* Post Cache */
+      /*  Post Cache */
       send = function(update, distinct) {
         token = "5e1e1a9c5b3420a5700f9daa06c94c16"
         $.extend(update, {
@@ -100,7 +100,7 @@
         setXHR.send($.param(payload))
       }
       
-      /* Get Cache */
+      /*  Get Cache */
       get = function(distinct) {
         return MP.api.query('/api/2.0/engage', {'distinct_id': distinct})
       }
@@ -121,7 +121,7 @@
         ]
       })
       
-      /* Nested queries
+      /*  Nested queries
           Will request until buckets are 1 unit wide
       */
       nestedQuery = function (percentile, parameters, event, date) {
@@ -142,7 +142,7 @@
             }
             queryData['count'] += queryBuckets[queryBucket];
           }
-          /* Edge Case where buckets fail because of silly rounding */
+          /*  Edge Case where buckets fail because of silly rounding */
           try {
             var queryBounds = queryBucket.replace(/,/g,'').split(' - ');
             queryBounds = queryBounds.map(suffix)
@@ -183,7 +183,7 @@
         });
       }
       
-      /* Draw Table Function 
+      /*  Draw Table Function 
           Expects to be keys of the current values
       */
       
@@ -206,7 +206,11 @@
         table.rows.add(rows).draw();
       }
       
-      // Query logic
+      /*  Initial Query Logic 
+          Add force cache button
+          Never Cache Today's Date
+      */
+      
       var runQuery = function(){
         var forceCache = false
         var params = {}
