@@ -252,7 +252,7 @@
                 allow_more_buckets:true,
               };
               var eventKey = String(percent + ' ' + event)
-              if (isNaN(tableData[date][eventKey])) {
+              if (typeof tableData[date][eventKey] == 'undefined' || isNaN(tableData[date][eventKey])) {
                 console.log("Cache non existant: " + date)
                 pending += 1;
                 nestedQuery(percent, params[event][percent], event, date);
