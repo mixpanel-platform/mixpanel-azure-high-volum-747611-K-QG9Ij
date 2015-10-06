@@ -36,6 +36,14 @@
     <table id="table" class="display" width="100%"></table>
     <script>
     
+      /*  
+      ToDo
+        Add force cache button
+        Never Cache Today's Date
+        Graph Data based on the column selected
+        Refactor the get/cache
+      */
+    
       /*  Sort including ',' */
      function naturalSort (a, b) {
         aLower = suffix(a.split(' - ')[0].replace(/,/g,''));
@@ -206,11 +214,7 @@
         table.rows.add(rows).draw();
       }
       
-      /*  Initial Query Logic 
-          Add force cache button
-          Never Cache Today's Date
-      */
-      
+      /*  Initial Query Logic */
       var runQuery = function(){
         var forceCache = false
         var params = {}
