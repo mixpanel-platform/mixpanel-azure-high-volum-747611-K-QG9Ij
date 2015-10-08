@@ -283,6 +283,17 @@
       
       $('#run').on('click', function(e){
         dates = $('#dateRange').val();
+        var tparams = {event : 'BladeReady',
+            type: 'general',
+            limit: 10000,
+            on: 'properties["Context_Part_bladeId"]',
+            to_date: '2015-09-30',
+            from_date:'2015-08-01'
+            }
+        MP.api.segment('BladeReady', tparams).done(function(data){
+          debugger;
+          
+        })
         runQuery();
       });
     </script>
